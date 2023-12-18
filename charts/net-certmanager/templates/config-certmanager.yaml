@@ -1,0 +1,15 @@
+{{- if .Values.configCertmanager.configMap.create -}}
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: config-certmanager
+  labels:
+    {{- include "net-certmanager.labels" . | nindent 4 }}
+data:
+  {{- $example := pick .Values.configCertmanager.data "_example" -}}
+  {{- $sanitized := omit .Values.configCertmanager.data "_example" -}}
+  {{- toYaml $example | nindent 2 }}
+  {{- if $sanitized }}
+  {{- tpl (toYaml $sanitized) . | nindent 2 }}
+  {{- end }}
+{{- end }}

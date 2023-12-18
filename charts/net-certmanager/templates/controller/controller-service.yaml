@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "net-certmanager.fullname" . }}-autoscaler-hpa
+  labels:
+    {{- include "net-certmanager.labels" . | nindent 4 }}
+    {{- include "net-certmanager.controllerSelectorLabels" . | nindent 4 }}
+spec:
+  type: {{ .Values.controller.service.type }}
+  selector:
+    {{- include "net-certmanager.labels" . | nindent 4 }}
+    {{- include "net-certmanager.controllerSelectorLabels" . | nindent 4 }}
+  ports:
+	{{- .Values.controller.service.ports | toYaml | nindent 2 }}

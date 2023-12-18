@@ -1,0 +1,13 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "net-certmanager.fullname" . }}-knative-serving-certmanager
+  labels:
+  {{- include "net-certmanager.labels" . | nindent 4 }}
+rules:
+- apiGroups: ["cert-manager.io"]
+  resources: ["certificates", "clusterissuers"]
+  verbs: ["get", "list", "create", "update", "delete", "patch", "watch"]
+- apiGroups: ["acme.cert-manager.io"]
+  resources: ["challenges"]
+  verbs: ["get", "list", "create", "update", "delete", "patch", "watch"]

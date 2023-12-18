@@ -1,0 +1,8 @@
+apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: {{ include "net-certmanager.fullname" . }}-selfsigned-cluster-issuer
+  labels:
+    {{- include "net-certmanager.labels" . | nindent 4 }}
+spec:
+  selfSigned: {}

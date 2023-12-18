@@ -1,0 +1,16 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: knative-internal-encryption-ca
+  namespace: {{ .Values.certmanager.namespace }}
+  labels:
+    {{- include "net-certmanager.labels" . | nindent 4 }}
+spec:
+  secretName: knative-internal-encryption-ca
+  commonName: knative.dev
+  usages:
+    - server auth
+  isCA: true
+  issuerRef:
+    kind: ClusterIssuer
+    name: {{ include "net-certmanager.fullname" . }}-selfsigned-cluster-issuer

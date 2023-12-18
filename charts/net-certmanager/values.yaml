@@ -1,0 +1,156 @@
+global:
+  config:
+    configLoggingName: config-logging
+    configObservabilityName: config-observability
+    metricsDomain: knative.dev/internal/serving
+
+kubernetesClusterDomain: cluster.local
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+controller:
+  image:
+    repository: gcr.io/knative-releases/knative.dev/net-certmanager/cmd/controller
+    tag: ""
+    digest: sha256:afbaa44c7f750ec36759b09e779351a474682ac73f9f393466a0a9db8b08cec0
+    pullPolicy: IfNotPresent
+
+  extraEnv: []
+
+  podAnnotations: {}
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    readOnlyRootFilesystem: true
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  topologySpreadConstraints: []
+
+  resources:
+    limits:
+      cpu: 300m
+      memory: 400Mi
+    requests:
+      cpu: 30m
+      memory: 40Mi
+
+  service:
+    type: ClusterIP
+    ports:
+    - name: http-metrics
+      port: 9090
+      targetPort: metrics
+    - name: http-profiling
+      port: 8008
+      targetPort: profiling
+
+webhook:
+  image:
+    repository: gcr.io/knative-releases/knative.dev/net-certmanager/cmd/webhook
+    tag: ""
+    digest: sha256:efdd87015207a49dcc611a7f7411f70369795a21c633b5e7f68c661dce1ecf88
+    pullPolicy: IfNotPresent
+
+  extraEnv: []
+
+  podAnnotations: {}
+
+  containerSecurityContext:
+    allowPrivilegeEscalation: false
+    capabilities:
+      drop:
+      - ALL
+    runAsNonRoot: true
+    seccompProfile:
+      type: RuntimeDefault
+
+  resources:
+    limits:
+      cpu: 200m
+      memory: 200Mi
+    requests:
+      cpu: 20m
+      memory: 20Mi
+
+  nodeSelector: {}
+
+  tolerations: []
+
+  affinity: {}
+
+  topologySpreadConstraints: []
+
+  service:
+    type: ClusterIP
+    ports:
+    - name: http-metrics
+      port: 9090
+      targetPort: metrics
+    - name: http-profiling
+      port: 8008
+      targetPort: profiling
+    - name: https-webhook
+      port: 443
+      targetPort: https-webhook
+
+configCertmanager:
+  configMap:
+    create: true
+  data:
+    _example: |
+    ################################
+    #                              #
+    #    EXAMPLE CONFIGURATION     #
+    #                              #
+    ################################
+
+    # This block is not actually functional configuration,
+    # but serves to illustrate the available configuration
+    # options and document them in a way that is accessible
+    # to users that `kubectl edit` this config map.
+    #
+    # These sample configuration options may be copied out of
+    # this block and unindented to actually change the configuration.
+
+    # issuerRef is a reference to the issuer for cluster external certificates used for ingress.
+    # IssuerRef should be either `ClusterIssuer` or `Issuer`.
+    # Please refer `IssuerRef` in https://github.com/cert-manager/cert-manager/tree/master/pkg/apis/certmanager/v1/types_certificate.go
+    # for more details about IssuerRef configuration.
+    # If the issuerRef is not specified, the self-signed `knative-internal-encryption-ca` ClusterIssuer is used.
+    issuerRef: |
+      kind: ClusterIssuer
+      name: letsencrypt-issuer
+
+    # clusterInternalIssuerRef is a reference to the issuer for cluster internal certificates used for ingress.
+    # ClusterInternalIssuerRef should be either `ClusterIssuer` or `Issuer`.
+    # Please refer `IssuerRef` in https://github.com/cert-manager/cert-manager/tree/master/pkg/apis/certmanager/v1/types_certificate.go
+    # for more details about ClusterInternalIssuerRef configuration.
+    # If the clusterInternalIssuerRef is not specified, the self-signed `knative-internal-encryption-ca` ClusterIssuer is used.
+    clusterInternalIssuerRef: |
+      kind: ClusterIssuer
+      name: knative-internal-encryption-issuer
+
+certmanager:
+  namespace: cert-manager

@@ -1,0 +1,21 @@
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingWebhookConfiguration
+metadata:
+  name: {{ include "net-certmanager.fullname" . }}-config.webhook.istio.networking.internal.knative.dev
+  labels:
+  {{- include "net-certmanager.labels" . | nindent 4 }}
+webhooks:
+- admissionReviewVersions:
+  - v1
+  - v1beta1
+  clientConfig:
+    service:
+      name: {{ include "net-certmanager.fullname" . }}-webhook
+      namespace: {{ .Release.Namespace }}
+  failurePolicy: Fail
+  name: config.webhook.net-certmanager.networking.internal.knative.dev
+  objectSelector:
+    matchLabels:
+      app.kubernetes.io/component: net-certmanager
+      app.kubernetes.io/name: knative-serving
+  sideEffects: None
