@@ -1,7 +1,7 @@
 apiVersion: admissionregistration.k8s.io/v1
 kind: ValidatingWebhookConfiguration
 metadata:
-  name: {{ include "net-certmanager.fullname" . }}-config.webhook.istio.networking.internal.knative.dev
+  name: config.webhook.net-certmanager.networking.internal.knative.dev
   labels:
   {{- include "net-certmanager.labels" . | nindent 4 }}
 webhooks:
