@@ -71,9 +71,5 @@ app: net-certmanager-webhook
 Create the name of the service account to use
 */}}
 {{- define "net-certmanager.serviceAccountName" -}}
-{{- if .Values.serviceAccount.create }}
-{{- default (include "net-certmanager.fullname" .) .Values.serviceAccount.name }}
-{{- else }}
-{{- default "default" .Values.serviceAccount.name }}
-{{- end }}
+{{- default "controller" .Values.serviceAccount.name }}
 {{- end }}
