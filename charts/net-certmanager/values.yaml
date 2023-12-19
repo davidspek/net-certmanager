@@ -23,7 +23,7 @@ controller:
   image:
     repository: gcr.io/knative-releases/knative.dev/net-certmanager/cmd/controller
     tag: ""
-    digest: sha256:afbaa44c7f750ec36759b09e779351a474682ac73f9f393466a0a9db8b08cec0
+    digest: sha256:4fa34db76f21c18112383edf8511f5ce2aba082bbae3b0441975f8d728f110ee
     pullPolicy: IfNotPresent
 
   extraEnv: []
@@ -70,7 +70,7 @@ webhook:
   image:
     repository: gcr.io/knative-releases/knative.dev/net-certmanager/cmd/webhook
     tag: ""
-    digest: sha256:efdd87015207a49dcc611a7f7411f70369795a21c633b5e7f68c661dce1ecf88
+    digest: sha256:f8b9a7786cd00ae942abe596e1152ff6aa1727136280b1f1b6ddbafda51f684a
     pullPolicy: IfNotPresent
 
   extraEnv: []
