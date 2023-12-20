@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "net-certmanager.fullname" . }}-net-certmanager-webhook
+  name: {{ include "net-certmanager.fullname" . }}-webhook
   labels:
     {{- include "net-certmanager.labels" . | nindent 4 }}
     {{- include "net-certmanager.webhookSelectorLabels" . | nindent 4 }}

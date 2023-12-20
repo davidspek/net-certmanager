@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: {{ include "net-certmanager.fullname" . }}-net-istio-controller
+  name: {{ include "net-certmanager.fullname" . }}-controller
   labels:
     {{- include "net-certmanager.labels" . | nindent 4 }}
     {{- include "net-certmanager.controllerSelectorLabels" . | nindent 4 }}
