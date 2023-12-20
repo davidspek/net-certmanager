@@ -3,6 +3,7 @@ kind: ClusterRole
 metadata:
   name: {{ include "net-certmanager.fullname" . }}-knative-serving-certmanager
   labels:
+    serving.knative.dev/controller: "true"
   {{- include "net-certmanager.labels" . | nindent 4 }}
 rules:
 - apiGroups: ["cert-manager.io"]
